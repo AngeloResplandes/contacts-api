@@ -4,7 +4,7 @@ import { readFile, writeFile } from "fs/promises"
 const dataSource = './data/list.json'
 
 export const add = async (req: Request, res: Response) => {
-    const { name, number, email } = req.body
+    const { name, number, email, description } = req.body
 
     const generateId = (): string => {
         return Math.random().toString(36).slice(2, 11)
@@ -20,7 +20,7 @@ export const add = async (req: Request, res: Response) => {
         return
     }
 
-    const loadContacts = async (): Promise<{ id: string; name: string; number: string; email: string }[]> => {
+    const loadContacts = async (): Promise<{ id: string; name: string; number: string; email: string; description: string; }[]> => {
         try {
             const data = await readFile(dataSource, { encoding: "utf8" })
             return JSON.parse(data) || []
@@ -29,19 +29,19 @@ export const add = async (req: Request, res: Response) => {
         }
     }
 
-    const saveContacts = async (contacts: { id: string; name: string; number: string; email: string }[]) => {
+    const saveContacts = async (contacts: { id: string; name: string; number: string; email: string; description: string; }[]) => {
         await writeFile(dataSource, JSON.stringify(contacts, null, 2))
     }
 
     const contacts = await loadContacts()
-    const newContact = { id, name, number, email }
+    const newContact = { id, name, number, email, description }
     contacts.push(newContact)
     await saveContacts(contacts)
     res.status(201).json({ contact: newContact })
 }
 
 export const all = async (req: Request, res: Response) => {
-    const loadContacts = async (): Promise<{ id: string; name: string; number: string; email: string }[]> => {
+    const loadContacts = async (): Promise<{ id: string; name: string; number: string; email: string; description: string; }[]> => {
         try {
             const data = await readFile(dataSource, { encoding: "utf8" })
             return JSON.parse(data) || []
