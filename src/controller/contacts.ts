@@ -30,7 +30,7 @@ export const add = async (req: Request, res: Response) => {
         res.status(500).json({ error: "Erro ao adicionar contato" })
         return
     }
-};
+}
 
 
 export const all = async (req: Request, res: Response) => {
@@ -43,7 +43,7 @@ export const all = async (req: Request, res: Response) => {
         res.status(500).json({ error: "Erro ao carregar contatos" })
         return
     }
-};
+}
 
 
 export const update = async (req: Request, res: Response) => {
