@@ -3,8 +3,10 @@
     "version": "1.0.0",
     "main": "server.ts",
     "scripts": {
+        "start": "node dist/server.js",
         "dev": "tsx watch src/server.ts",
-        "build": "tsc"
+        "build": "tsc",
+        "prepare": "npm run build"
     },
     "author": "",
     "license": "ISC",

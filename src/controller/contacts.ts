@@ -16,10 +16,21 @@ export const add = async (req: Request, res: Response) => {
             return
         }
 
+        let contacts = await loadContacts()
+
+        const contactExists = contacts.some(contact =>
+            contact.name === name && contact.number === number &&
+            contact.email === email && contact.description === description
+        )
+
+        if (contactExists) {
+            res.status(400).json({ error: "Contato com o mesmo nome, número, email e descrição já existe" })
+            return
+        }
+
         const generateId = (): string => Math.random().toString(36).slice(2, 11)
         const id = generateId()
 
-        let contacts = await loadContacts()
         const newContact = { id, name, number, email, description }
         contacts.push(newContact)
 
@@ -32,7 +43,6 @@ export const add = async (req: Request, res: Response) => {
     }
 }
 
-
 export const all = async (req: Request, res: Response) => {
     try {
         let contacts = await loadContacts()
@@ -44,7 +54,6 @@ export const all = async (req: Request, res: Response) => {
         return
     }
 }
-
 
 export const update = async (req: Request, res: Response) => {
     try {
@@ -85,7 +94,6 @@ export const update = async (req: Request, res: Response) => {
     }
 }
 
-
 export const remove = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
@@ -117,7 +125,6 @@ export const remove = async (req: Request, res: Response) => {
     }
 }
 
-
 const loadContacts = async (): Promise<{
     id: string
     name: string
@@ -132,7 +139,6 @@ const loadContacts = async (): Promise<{
         return []
     }
 }
-
 
 const saveContacts = async (contacts: {
     id: string
